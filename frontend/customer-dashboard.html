@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+  <title>Customer Dashboard - RideEase</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+
+  <style>
+
+    body {
+
+      background-image: url('CusBack.jpg');
+
+      background-size: cover;
+
+      background-repeat: no-repeat;
+
+      background-position: center center;
+
+      background-attachment: fixed;
+
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+      margin: 0;
+
+      padding: 0;
+
+    }
+
+
+
+    body::before {
+
+      content: "";
+
+      position: fixed;
+
+      inset: 0;
+
+      background: linear-gradient(to right, rgba(227, 242, 253, 0.88), rgba(255, 255, 255, 0.85));
+
+      z-index: -1;
+
+    }
+
+
+
+    .navbar-custom {
+
+      background: linear-gradient(to right, #b71c1c, #880e4f);
+
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+
+      z-index: 100;
+
+    }
+
+
+
+    .navbar-custom .navbar-brand,
+
+    .navbar-custom .nav-link,
+
+    .navbar-custom .dropdown-toggle {
+
+      color: #fff !important;
+
+      font-weight: 600;
+
+    }
+
+
+
+    .profile-icon {
+
+      width: 36px;
+
+      height: 36px;
+
+      display: flex;
+
+      align-items: center;
+
+      justify-content: center;
+
+      background-color: white;
+
+      border-radius: 50%;
+
+      font-size: 1.2rem;
+
+      color: #880e4f;
+
+      margin-right: 8px;
+
+    }
+
+
+
+    .main-container {
+
+      display: grid;
+
+      grid-template-columns: 1fr 300px;
+
+      gap: 30px;
+
+      max-width: 1200px;
+
+      margin: 60px auto;
+
+      padding: 0 20px;
+
+    }
+
+
+
+    .dashboard-wrapper {
+
+      background: rgba(255, 255, 255, 0.96);
+
+      border-radius: 20px;
+
+      padding: 40px 30px;
+
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+
+      animation: fadeInLeft 0.6s ease;
+
+    }
+
+
+
+    .dashboard-wrapper h2 {
+
+      font-size: 2rem;
+
+      color: #b71c1c;
+
+      font-weight: 700;
+
+    }
+
+
+
+    .dashboard-wrapper p {
+
+      color: #555;
+
+    }
+
+
+
+    .btn-feature {
+
+      background-color: #d32f2f;
+
+      color: white;
+
+      padding: 12px 25px;
+
+      border-radius: 30px;
+
+      font-size: 1rem;
+
+      margin: 8px 5px;
+
+      text-decoration: none;
+
+      transition: 0.3s;
+
+      display: inline-block;
+
+    }
+
+
+
+    .btn-feature:hover {
+
+      background-color: #ad1d1d;
+
+      transform: scale(1.05);
+
+    }
+
+
+
+    .info-card {
+
+      background-color: #ffffffdd;
+
+      border-radius: 15px;
+
+      overflow: hidden;
+
+      box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+
+      animation: fadeInRight 0.6s ease;
+
+    }
+
+
+
+    .info-card img {
+
+      width: 100%;
+
+      height: 160px;
+
+      object-fit: cover;
+
+    }
+
+
+
+    .info-card .card-body {
+
+      padding: 20px;
+
+    }
+
+
+
+    .read-more-btn {
+
+      margin-top: 10px;
+
+      background-color: #880e4f;
+
+      color: white;
+
+      border-radius: 20px;
+
+      padding: 8px 20px;
+
+      font-weight: 500;
+
+      text-decoration: none;
+
+    }
+
+
+
+    .read-more-btn:hover {
+
+      background-color: #b71c1c;
+
+    }
+
+
+
+    @keyframes fadeInLeft {
+
+      from { opacity: 0; transform: translateX(-40px); }
+
+      to { opacity: 1; transform: translateX(0); }
+
+    }
+
+
+
+    @keyframes fadeInRight {
+
+      from { opacity: 0; transform: translateX(40px); }
+
+      to { opacity: 1; transform: translateX(0); }
+
+    }
+
+
+
+    footer.footer {
+
+      background-color: rgba(255, 255, 255, 0.7);
+
+      backdrop-filter: blur(10px);
+
+      color: #444;
+
+      text-align: center;
+
+      padding: 40px 0 20px;
+
+      margin-top: 80px;
+
+      border-top: 1px solid #ccc;
+
+    }
+
+
+
+    .footer .social-icons i {
+
+      font-size: 1.5rem;
+
+      margin: 0 10px;
+
+      color: #b71c1c;
+
+      transition: 0.3s;
+
+    }
+
+
+
+    .footer .social-icons i:hover {
+
+      color: #880e4f;
+
+    }
+
+
+
+    .footer a {
+
+      color: #b71c1c;
+
+      text-decoration: none;
+
+      margin: 0 8px;
+
+    }
+
+
+
+    .footer a:hover {
+
+      text-decoration: underline;
+
+    }
+
+
+
+    @media (max-width: 768px) {
+
+      .main-container {
+
+        grid-template-columns: 1fr;
+
+      }
+
+    }
+    /* --- Font Import --- */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    /* --- Base Styles --- */
+    .rideease-chatbot {
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* --- Chat Widget Container --- */
+    .chat-widget-container {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      z-index: 1000;
+    }
+
+    /* --- Floating Action Button (FAB) --- */
+    .chat-open-button {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #d32f2f, #880e4f);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      animation: pulse 2.5s infinite;
+    }
+    .chat-open-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.7); }
+      70% { box-shadow: 0 0 0 18px rgba(211, 47, 47, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+    }
+
+    /* --- Chat Popup Window --- */
+    .chat-popup {
+      position: absolute;
+      bottom: 85px;
+      right: 0;
+      width: 370px;
+      height: 70vh;
+      max-height: 600px;
+      background-color: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+      transform-origin: bottom right;
+      transform: scale(0.5);
+      opacity: 0;
+      visibility: hidden;
+    }
+    .chat-popup.active {
+      transform: scale(1);
+      opacity: 1;
+      visibility: visible;
+    }
+    @media (max-width: 420px) {
+      .chat-popup {
+        width: calc(100vw - 40px);
+        bottom: 80px;
+        right: -5px;
+      }
+    }
+
+    /* --- Header --- */
+    .chat-header {
+      background: linear-gradient(45deg, #b71c1c, #880e4f);
+      color: white;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top-left-radius: 15px;
+      border-top-right-radius: 15px;
+    }
+    .chat-header h3 {
+      font-weight: 600;
+      font-size: 1.125rem;
+      margin: 0;
+    }
+    .chat-close-button {
+      background: none;
+      border: none;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      opacity: 0.8;
+      transition: opacity 0.2s;
+    }
+    .chat-close-button:hover {
+      opacity: 1;
+    }
+
+    /* --- Messages Area --- */
+    .chat-messages {
+      flex-grow: 1;
+      padding: 1rem;
+      overflow-y: auto;
+      background-color: #f9fafb;
+    }
+    .message {
+      display: flex;
+      margin-bottom: 1rem;
+      max-width: 85%;
+    }
+    .message.user {
+      margin-left: auto;
+      flex-direction: row-reverse;
+    }
+    .message-bubble {
+      padding: 0.75rem 1rem;
+      border-radius: 18px;
+      word-wrap: break-word;
+    }
+    .message.user .message-bubble {
+      background-color: #d32f2f;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    .message.ai .message-bubble {
+      background-color: #e5e7eb;
+      color: #1f2937;
+      border-bottom-left-radius: 4px;
+    }
+
+    /* --- Typing Indicator --- */
+    .typing-indicator span {
+      height: 8px;
+      width: 8px;
+      margin: 0 2px;
+      background-color: #9ca3af;
+      display: inline-block;
+      border-radius: 50%;
+      animation: bounce 1.4s infinite ease-in-out both;
+    }
+    .typing-indicator span:nth-child(1) { animation-delay: -0.32s; }
+    .typing-indicator span:nth-child(2) { animation-delay: -0.16s; }
+    @keyframes bounce {
+      0%, 80%, 100% { transform: scale(0); }
+      40% { transform: scale(1.0); }
+    }
+
+    /* --- Input Area --- */
+    .chat-input-area {
+      padding: 1rem;
+      border-top: 1px solid #e5e7eb;
+      background-color: #ffffff;
+    }
+    .chat-input-form {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .chat-input {
+      flex-grow: 1;
+      border: 1px solid #d1d5db;
+      border-radius: 9999px;
+      padding: 0.6rem 1rem;
+      font-size: 0.95rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .chat-input:focus {
+      outline: none;
+      border-color: #d32f2f;
+      box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.2);
+    }
+    .chat-submit-button {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: #d32f2f;
+      color: white;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.2s;
+    }
+    .chat-submit-button:hover {
+      background-color: #b71c1c;
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+
+
+<!-- THIS IS THE CORRECTED NAVBAR -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+  <div class="container">
+    <a class="navbar-brand" th:href="@{/customer/dashboard}">RideEase</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- This list is pushed to the left -->
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/customer/dashboard}">Home</a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <!-- The form ensures logout is a POST request, which is more secure -->
+          <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-link nav-link">Logout</button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+
+
+<div class="main-container">
+
+  <div class="dashboard-wrapper">
+
+    <h2>Welcome to RideEase</h2>
+
+    <p>Search for cars, manage your bookings, and keep your profile updated.</p>
+
+    <div>
+
+      <a th:href="@{/customer/search-cars}"class="btn-feature"><i class="bi bi-search me-2"></i>Search Cars</a>
+
+      <a th:href="@{/customer/create-booking}" class="btn-feature"><i class="bi bi-calendar-plus me-2"></i>Create Booking</a>
+      <a th:href="@{/customer/my-bookings}" class="btn-feature"><i class="bi bi-card-list me-2"></i>My Bookings</a>
+
+    </div>
+
+  </div>
+
+
+
+  <div class="info-card">
+
+    <img src="/CarRent.jpg" alt="Why RideEase">
+
+    <div class="card-body">
+
+      <h5 class="card-title">Why Choose RideEase?</h5>
+
+      <p class="card-text">Enjoy comfort, affordability, and 24/7 customer support across Sri Lanka.</p>
+
+      <a href="#" class="read-more-btn">Read More</a>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+
+<footer class="footer">
+
+  <div class="container">
+
+    <div class="social-icons mb-3">
+
+      <a href="#"><i class="bi bi-facebook"></i></a>
+
+      <a href="#"><i class="bi bi-twitter-x"></i></a>
+
+      <a href="#"><i class="bi bi-instagram"></i></a>
+
+    </div>
+
+    <div>
+
+      <a href="#">About Us</a> | <a href="#">Contact Us</a>
+
+    </div>
+
+    <div class="mt-3">
+
+      <small>&copy; 2025 RideEase. All rights reserved.</small>
+
+    </div>
+
+  </div>
+
+</footer>
+<div class="rideease-chatbot">
+  <div class="chat-widget-container">
+    <!-- Chat Popup Window -->
+    <div id="chat-popup" class="chat-popup">
+      <div class="chat-header">
+        <h3>RideEase AI Support</h3>
+        <button id="close-chat" class="chat-close-button">&times;</button>
+      </div>
+      <div id="chat-messages" class="chat-messages">
+        <div class="message ai">
+          <div class="message-bubble">
+            <p>Hello! I'm Eva, your AI assistant. How can I help you with your booking today?</p>
+          </div>
+        </div>
+        <!-- Typing indicator is now correctly placed INSIDE the messages container -->
+        <div id="typing-indicator-container" style="display: none;" class="message ai">
+          <div class="message-bubble">
+            <div class="typing-indicator"><span></span><span></span><span></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-area">
+        <form id="chat-form" class="chat-input-form">
+          <input type="text" id="chat-input" placeholder="Ask a question..." class="chat-input">
+          <button type="submit" class="chat-submit-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+    <!-- Floating Chat Button -->
+    <button id="open-chat" class="chat-open-button">
+      <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-9.8 11.64c.06.3.1.59.1.89v.03c0 .82-.19 1.61-.53 2.32l-.22.47-.22.47c-.22.48-.48.94-.78 1.38l-.06.09a1 1 0 0 0 1.52 1.3l.06-.09c.3-.44.56-.9.78-1.38l.22-.47.22-.47c.34-.71.53-1.5.53-2.32v-.03c0-.3.04-.59.1-.89A10 10 0 0 0 12 2zm0 18a8 8 0 0 1-7.85-6.33c.05-.2.1-.4.15-.6V13a8 8 0 1 1 15.4 0v.07c.05.2.1.4.15.6A8 8 0 0 1 12 20zm-3-7a1 1 0 1 1 0-2 1 1 0 0 1 0 2zm6 0a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/></svg>
+    </button>
+  </div>
+</div>
+
+<script>
+  const openChatBtn = document.getElementById('open-chat');
+  const closeChatBtn = document.getElementById('close-chat');
+  const chatPopup = document.getElementById('chat-popup');
+  const chatForm = document.getElementById('chat-form');
+  const chatInput = document.getElementById('chat-input');
+  const chatMessages = document.getElementById('chat-messages');
+  const typingIndicatorContainer = document.getElementById('typing-indicator-container');
+  let chatHistory = [];
+  let isFirstMessage = true;
+
+  openChatBtn.addEventListener('click', () => {
+    chatPopup.classList.add('active');
+    openChatBtn.style.display = 'none';
+  });
+
+  closeChatBtn.addEventListener('click', () => {
+    chatPopup.classList.remove('active');
+    openChatBtn.style.display = 'flex';
+  });
+
+  chatForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const userInput = chatInput.value.trim();
+    if (!userInput) return;
+    addChatMessage(userInput, 'user');
+    chatInput.value = '';
+    typingIndicatorContainer.style.display = 'flex';
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    await getAiResponse(userInput);
+  });
+
+  function addChatMessage(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message ${sender}`;
+    const bubble = document.createElement('div');
+    bubble.className = 'message-bubble';
+    bubble.innerHTML = `<p>${text.replace(/\n/g, '<br>')}</p>`;
+    messageDiv.appendChild(bubble);
+    // Correctly insert the new message before the typing indicator
+    chatMessages.insertBefore(messageDiv, typingIndicatorContainer);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  async function getAiResponse(userInput) {
+    const systemInstructionText = `You are "Eva", a friendly and professional customer support agent for "RideEase", a car rental service in Sri Lanka. Your goal is to assist users with their questions about renting a car. Be concise and helpful. If you don't know an answer, politely say you need to check with a human agent. Common questions involve: required documents (license, ID), payment methods, how to book, and car types. Required documents are a valid driver's license and a national ID or passport. We accept credit cards and debit cards. Bookings are made through the website.`;
+    const processedInput = isFirstMessage ? `${systemInstructionText}\n\nUSER QUESTION: ${userInput}` : userInput;
+
+    chatHistory.push({ role: "user", parts: [{ text: processedInput }] });
+    isFirstMessage = false;
+
+    const payload = { contents: chatHistory };
+    const apiKey = "AIzaSyA6mBqDJJ_0rg52gnSjnLqTas_x5Ckd_nA"; // IMPORTANT: Replace with your actual API key
+    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!response.ok) {
+        let errorData;
+        try { errorData = await response.json(); } catch (e) { throw new Error(`API error: ${response.status} ${response.statusText}`); }
+        const message = errorData.error?.message || JSON.stringify(errorData);
+        throw new Error(message);
+      }
+
+      const result = await response.json();
+      let aiText = "Sorry, I can't seem to connect right now. Please try again later.";
+
+      if (result.candidates && result.candidates.length > 0) {
+        if (result.candidates[0].content && result.candidates[0].content.parts && result.candidates[0].content.parts.length > 0) {
+          aiText = result.candidates[0].content.parts[0].text;
+        } else {
+          aiText = "I'm unable to provide a response to that. Please try another question.";
+        }
+      } else if (result.promptFeedback && result.promptFeedback.blockReason) {
+        aiText = `I can't respond to that due to: ${result.promptFeedback.blockReason}. Please rephrase your question.`;
+      }
+
+      chatHistory.push({ role: "model", parts: [{ text: aiText }] });
+      typingIndicatorContainer.style.display = 'none';
+      addChatMessage(aiText, 'ai');
+    } catch (error) {
+      console.error("Failed to get AI response:", error);
+      typingIndicatorContainer.style.display = 'none';
+      addChatMessage(`I'm sorry, an error occurred: ${error.message}`, 'ai');
+    }
+  }
+</script>
+</body>
+</html>

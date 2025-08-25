@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>View All Bookings - RideEase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .page-container { display: flex; flex-direction: column; min-height: 100vh; }
+        .content-wrap { flex: 1; padding: 40px 20px; }
+        .navbar-custom { background: linear-gradient(to right, #2c3e50, #34495e); }
+        .navbar-custom .navbar-brand, .navbar-custom .nav-link { color: #fff !important; font-weight: 600; }
+        .table-wrapper { background: #fff; border-radius: 15px; padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.1); }
+        .table-wrapper h2 { color: #2c3e50; font-weight: 700; margin-bottom: 20px; }
+        .table th { color: #34495e; }
+    </style>
+</head>
+<body>
+<div class="page-container">
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/owner/dashboard}">RideEase Owner</a>
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" th:href="@{/owner/dashboard}">Dashboard</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="content-wrap container">
+        <div class="table-wrapper">
+            <h2>All Customer Bookings</h2>
+            <div class="table-responsive">
+                <table class="table table-hover align-middle">
+                    <thead class="table-light">
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Customer Name</th>
+                        <th>Car Model</th>
+                        <th>Pickup Date</th>
+                        <th>Return Date</th>
+                        <th>Total Amount</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="booking : ${bookings}">
+                        <td th:text="${'BK-' + booking.bookingId}"></td>
+                        <td th:text="${booking.customer.name}"></td>
+                        <td th:text="${booking.car.carModel}"></td>
+                        <td th:text="${#temporals.format(booking.pickupDate, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${#temporals.format(booking.returnDate, 'yyyy-MM-dd HH:mm')}"></td>
+                        <td th:text="${ #numbers.formatDecimal(booking.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
+                        <td>
+                            <span class="badge bg-success" th:text="${booking.status}"></span>
+                        </td>
+                    </tr>
+                    <tr th:if="${bookings.isEmpty()}">
+                        <td colspan="7" class="text-center p-4">No bookings found in the system.</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Owner Dashboard - RideEase</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-image: url('OwnerBack.jpg');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-attachment: fixed;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to right, rgba(227, 242, 253, 0.85), rgba(255, 255, 255, 0.85));
+            z-index: -1;
+        }
+
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .content-wrap {
+            flex: 1;
+        }
+
+        .navbar-custom {
+            background: linear-gradient(to right, #2c3e50, #34495e);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .navbar-custom .navbar-brand,
+        .navbar-custom .nav-link,
+        .navbar-custom .dropdown-toggle {
+            color: #fff !important;
+            font-weight: 600;
+        }
+
+        .navbar-custom .nav-link:hover,
+        .navbar-custom .dropdown-item:hover {
+            color: #e0e0e0 !important;
+        }
+
+        .navbar-custom .dropdown-menu {
+            background-color: #34495e;
+            border: none;
+        }
+
+        .navbar-custom .dropdown-item {
+            color: white;
+        }
+
+        .navbar-custom .dropdown-item:hover {
+            background-color: #2c3e50;
+        }
+
+        .profile-icon {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            color: #34495e;
+            margin-right: 8px;
+        }
+
+        .dashboard-wrapper {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            margin: 60px auto 20px auto;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn 1s ease-in-out;
+            text-align: center;
+        }
+
+        .btn-feature {
+            background-color: #2c3e50;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            font-size: 1rem;
+            margin: 8px;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn-feature:hover {
+            background-color: #1a252f;
+            transform: scale(1.05);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .cards-section-container {
+            display: flex;
+            justify-content: center;
+            align-items: stretch;
+            flex-wrap: wrap;
+            gap: 30px;
+            padding: 0 20px;
+            margin: 60px auto;
+        }
+        
+        .info-card-wrapper {
+            max-width: 300px;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .info-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .info-card img {
+            width: 100%;
+            height: 160px;
+            object-fit: cover;
+        }
+        
+        .info-card .card-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .read-more-btn {
+            margin-top: 10px;
+            background-color: #34495e;
+            color: white;
+            border-radius: 20px;
+            padding: 6px 18px;
+            font-size: 0.9rem;
+            text-decoration: none;
+            display: inline-block;
+            align-self: flex-start;
+        }
+
+        .read-more-btn:hover {
+            background-color: #2c3e50;
+        }
+
+        .footer {
+            background: linear-gradient(to right, #2c3e50, #34495e);
+            color: white;
+            padding: 40px 0 20px 0;
+            width: 100%;
+            position: relative;
+        }
+
+        .footer a {
+            color: #ffebee;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        .footer a:hover {
+            color: #fff;
+        }
+
+        .footer .social-icons i {
+            font-size: 1.4rem;
+            margin-right: 15px;
+            transition: 0.3s;
+        }
+
+        .footer .social-icons i:hover {
+            color: #ffcdd2;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="page-container">
+    <div th:if="${param.carAdded}" class="alert alert-success text-center">
+        Vehicle has been successfully added!
+    </div>
+    <div class="content-wrap">
+        <nav class="navbar navbar-expand-lg navbar-custom">
+            <div class="container">
+                <a class="navbar-brand" href="#">RideEase Owner</a>
+                <button class="navbar-toggler bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" th:href="@{/owner/dashboard}">Home</a></li>
+                    </ul>
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown">
+                                <div class="profile-icon"><i class="bi bi-person-fill"></i></div>
+                                <span>Profile</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" th:href="@{/owner/profile}">View Profile</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" th:href="@{/logout}">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="dashboard-wrapper">
+            <h2 class="mb-3">Welcome Back, Owner!</h2>
+            <p class="mb-4" style="font-size: 1.1rem; color: #555;">Manage your vehicles, view bookings, and track payments.</p>
+            <div>
+                <a th:href="@{/owner/add-vehicle}" class="btn-feature"><i class="bi bi-plus-circle me-2"></i>Add Vehicle</a>
+                <a th:href="@{/owner/manage-vehicles}" class="btn-feature"><i class="bi bi-car-front-fill me-2"></i>Manage Vehicles</a>
+                <a th:href="@{/owner/bookings}" class="btn-feature"><i class="bi bi-calendar-check-fill me-2"></i>View Bookings</a>
+                <a th:href="@{/owner/payments}" class="btn-feature"><i class="bi bi-credit-card-fill me-2"></i>Payment Details</a>
+            </div>
+        </div>
+
+        <div class="cards-section-container">
+            <div class="info-card-wrapper">
+                <div class="card info-card">
+                    <img src="/OwnerRent.jpg" alt="Rental Tips">
+                    <div class="card-body">
+                        <h6 class="card-title">Rental Tips for Owners</h6>
+                        <a href="#" class="read-more-btn">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card-wrapper">
+                <div class="card info-card">
+                    <img src="/Maintain.jpg" alt="Car Maintenance">
+                    <div class="card-body">
+                        <h6 class="card-title">Vehicle Maintenance Guide</h6>
+                        <a href="#" class="read-more-btn">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <div class="row mb-3">
+                <div class="col">
+                    <div class="social-icons">
+                        <a href="#"><i class="bi bi-facebook"></i></a>
+                        <a href="#"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#"><i class="bi bi-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <a href="#">About Us</a> |
+                    <a href="#">Contact Us</a>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col">
+                    <small>&copy; 2025 RideEase. All rights reserved.</small>
+                </div>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
